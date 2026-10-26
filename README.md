@@ -19,6 +19,27 @@ The Viewer link remains visible to signed-in users without the role so you can d
 
 ## How sign-in works
 
+```text
+Browser                    Your C# web app                  Entra
+   |                              |                           |
+   |--- Sign in ----------------->|                           |
+   |<-- Redirect to Entra --------|                           |
+   |--- Authenticate with Entra ----------------------------->|
+   |<-- Response directing browser to app callback + code ----|
+   |--- Callback with code ------>|                           |
+   |                              |--- Exchange code -------->|
+   |                              |    + app credential       |
+   |                              |    + PKCE verifier*       |
+   |                              |<-- Tokens ----------------|
+   |                              |                           |
+   |                              | Validate ID token         |
+   |<-- Set authentication cookie-|                           |
+   |--- Subsequent request ------>|                           |
+   |    with cookie               | Check Viewer role         |
+```
+
+`*` The PKCE verifier is required when PKCE is used. This application enables PKCE.
+
 1. You select **Sign in with Microsoft**.
 2. ASP.NET Core redirects your browser to Microsoft Entra ID using OpenID Connect authorization-code flow with PKCE.
 3. You authenticate with Entra, including MFA when required.
@@ -26,6 +47,10 @@ The Viewer link remains visible to signed-in users without the role so you can d
 5. The server exchanges the code for tokens, authenticating the application with its client credential and supplying its PKCE verifier.
 6. Microsoft.Identity.Web and ASP.NET Core validate the ID token. The app creates an encrypted, authenticated, HTTP-only session cookie.
 7. Subsequent requests use this cookie. The Viewer authorization policy checks the signed-in principal for the exact role value `Viewer`.
+
+The browser carries the short-lived **authorization code**, not the tokens, back to the web app. The callback is a browser request to the app's registered redirect URI; you do not need JavaScript to forward the code. The server then exchanges the code directly with Entra over HTTPS.
+
+The browser receives the application's **authentication cookie**, not the Entra tokens. On subsequent requests, ASP.NET Core validates the cookie and uses the identity and role claims in its authentication ticket. The Viewer policy checks those claims on the server; it does not exchange the code again or query Entra on every page request.
 
 The **client secret authenticates the application**, not the user. The client ID identifies the app but is public. A confidential server-side app needs a credential when redeeming its authorization code; PKCE does not replace that requirement.
 
