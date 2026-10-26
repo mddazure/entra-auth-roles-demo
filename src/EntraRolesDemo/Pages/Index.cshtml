@@ -1,0 +1,44 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "How it works";
+}
+<section class="hero">
+    <p class="eyebrow">Microsoft Entra ID / interactive demo</p>
+    <h1>One identity.<br />The right access.</h1>
+    <p class="lead">Sign in with Entra. Inspect the claims it returns. Discover how an app role
+        becomes an authorization decision in a C# web application.</p>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <a class="button" asp-page="/Identity">Explore my identity</a>
+    }
+    else
+    {
+        <form method="post" asp-page-handler="SignIn">
+            <button type="submit">Sign in with Microsoft</button>
+        </form>
+        <p class="muted">Your credentials stay with Microsoft Entra, not this application.</p>
+    }
+</section>
+<div class="cards">
+    <section class="card">
+        <span class="step">01 / Authenticate</span>
+        <h2>Who are you?</h2>
+        <p>Entra handles sign-in and any required MFA. The browser returns an authorization code to this app.</p>
+    </section>
+    <section class="card">
+        <span class="step">02 / Inspect</span>
+        <h2>What does Entra assert?</h2>
+        <p>The server exchanges the code for tokens and validates the ID token. See its claims, including <code>roles</code>.</p>
+    </section>
+    <section class="card">
+        <span class="step">03 / Authorize</span>
+        <h2>What can you access?</h2>
+        <p>Try the Viewer area. The server requires <code>roles: ["Viewer"]</code>; signing in alone is not enough.</p>
+    </section>
+</div>
+<aside class="callout">
+    <h2>Try two accounts</h2>
+    <p>Assign one account the <strong>Viewer</strong> app role and leave another without a role.
+        Both can sign in when assignment is not required, but only the Viewer can open the protected page.</p>
+</aside>

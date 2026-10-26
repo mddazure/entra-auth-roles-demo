@@ -1,0 +1,20 @@
+@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Access denied";
+}
+<p class="eyebrow">03 / Authorization denied</p>
+<h1>Signed in does not mean allowed.</h1>
+<p class="badge denied">Access denied / 403</p>
+<p class="lead">The Viewer area requires the <code>Viewer</code> app role.
+    Authentication alone does not grant this permission.</p>
+<section class="card">
+    <h2>How to grant access</h2>
+    <ol>
+        <li>Open your app in Entra <strong>Enterprise applications</strong>.</li>
+        <li>Open <strong>Users and groups</strong> and assign the user or a security group to <strong>Viewer</strong>.</li>
+        <li>Sign out of this app and sign in again to obtain fresh claims.</li>
+    </ol>
+    <p>Assignments to groups require the appropriate Entra license and apply to direct user members, not nested groups.</p>
+</section>
+<a asp-page="/Identity">Return to my identity</a>

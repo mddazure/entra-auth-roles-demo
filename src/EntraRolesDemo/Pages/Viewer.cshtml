@@ -1,0 +1,20 @@
+@page
+@model ViewerModel
+@{
+    ViewData["Title"] = "Viewer area";
+}
+<p class="eyebrow">03 / Authorization succeeded</p>
+<h1>You're a Viewer.</h1>
+<p class="badge">Access granted</p>
+<p class="lead">The server checked that you are authenticated and have the exact app role <code>Viewer</code>.</p>
+<section class="card">
+    <h2>Protected demonstration content</h2>
+    <p>This page only renders after the <code>ViewerOnly</code> authorization policy succeeds.
+        Typing its URL directly does not bypass the check.</p>
+    <dl>
+        <dt>Required claim type</dt><dd><code>roles</code></dd>
+        <dt>Required role value</dt><dd><code>Viewer</code></dd>
+        <dt>Decision location</dt><dd>ASP.NET Core, on the server</dd>
+    </dl>
+</section>
+<a asp-page="/Claims">Inspect the role claim</a>

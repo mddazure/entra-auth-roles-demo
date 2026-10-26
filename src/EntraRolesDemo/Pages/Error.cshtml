@@ -1,0 +1,9 @@
+@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "Something went wrong";
+}
+<h1>We couldn't complete the request.</h1>
+<p>Check the server logs using request ID <code>@Model.RequestId</code>.
+    For sign-in errors, check your tenant, app registration, credential, redirect URI, and Entra sign-in logs.</p>
+<a asp-page="/Index">Return home</a>

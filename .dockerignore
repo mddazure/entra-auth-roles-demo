@@ -1,0 +1,11 @@
+**
+!src/
+!src/EntraRolesDemo/
+!src/EntraRolesDemo/**
+src/EntraRolesDemo/bin/
+src/EntraRolesDemo/obj/
+src/EntraRolesDemo/.env*
+src/EntraRolesDemo/appsettings.*.local.json
+**/*.pfx
+**/*.pem
+**/*.key

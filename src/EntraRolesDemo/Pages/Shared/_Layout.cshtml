@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] | Entra roles lab</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="~/js/claims.js" asp-append-version="true" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header>
+        <nav aria-label="Main navigation" class="container">
+            <a class="brand" asp-page="/Index">Entra <span>roles lab</span></a>
+            <div class="nav-links">
+                <a asp-page="/Index">How it works</a>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-page="/Identity">My identity</a>
+                    <a asp-page="/Claims">Claims explorer</a>
+                    <a asp-page="/Viewer">Viewer area</a>
+                    <form method="post" asp-page="/Identity" asp-page-handler="SignOut">
+                        <button class="link-button" type="submit">Sign out</button>
+                    </form>
+                }
+            </div>
+        </nav>
+    </header>
+    <main id="main" class="container">
+        @RenderBody()
+    </main>
+    <footer class="container">
+        A demonstration of authentication, claims, and server-side authorization.
+        Claims can contain personal information. Do not share screenshots without reviewing them.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,44 @@
+@page
+@model ClaimsModel
+@{
+    ViewData["Title"] = "Claims explorer";
+}
+<p class="eyebrow">02 / Inspect the claims</p>
+<h1>Your sign-in, explained.</h1>
+<p class="lead">These claims come from your validated sign-in and are carried in the application's
+    authentication ticket. This is not a raw JWT viewer.</p>
+<section class="card">
+    <h2>The role claim</h2>
+    @if (Model.Roles.Length > 0)
+    {
+        <pre><code>@Model.RolesJson</code></pre>
+    }
+    else
+    {
+        <p class="badge neutral">No roles claim present</p>
+        <p>Assign an app role in Enterprise applications, then sign out and sign in again to obtain fresh claims.</p>
+    }
+    <p>The claim contains the role's <strong>value</strong>, such as <code>Viewer</code>,
+        rather than its display name or the group that granted it.</p>
+</section>
+<section class="card">
+    <h2>Claims from your validated sign-in</h2>
+    <label for="claim-search">Filter by claim name or value</label>
+    <input type="search" id="claim-search" placeholder="Try roles, name, or tid" />
+    <p id="claim-count" class="muted" aria-live="polite">@Model.Claims.Length claim entries</p>
+    <div class="table-scroll">
+        <table id="claims-table">
+            <thead><tr><th scope="col">Claim</th><th scope="col">Value</th></tr></thead>
+            <tbody>
+                @foreach (var claim in Model.Claims)
+                {
+                    <tr class="@(claim.Type == "roles" ? "role-row" : "")">
+                        <td><code>@claim.Type</code></td>
+                        <td>@claim.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+<p class="muted">Tokens and cookies are not displayed or stored in browser storage by this application.</p>

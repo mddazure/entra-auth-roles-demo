@@ -1,0 +1,44 @@
+@page
+@model IdentityModel
+@{
+    ViewData["Title"] = "My identity";
+}
+<p class="eyebrow">01 / Authentication succeeded</p>
+<h1>Hello, @(User.Identity?.Name ?? "signed-in user").</h1>
+<p class="lead">Entra authenticated you. The application now recognizes you using a secure authentication cookie.</p>
+<div class="cards">
+    <section class="card">
+        <h2>Identity</h2>
+        <dl>
+            <dt>Name <code>name</code></dt><dd>@(User.FindFirst("name")?.Value ?? "Not supplied")</dd>
+            <dt>Username <code>preferred_username</code></dt><dd>@(User.FindFirst("preferred_username")?.Value ?? "Not supplied")</dd>
+            <dt>User ID <code>oid</code></dt><dd>@(User.FindFirst("oid")?.Value ?? "Not supplied")</dd>
+            <dt>Tenant ID <code>tid</code></dt><dd>@(User.FindFirst("tid")?.Value ?? "Not supplied")</dd>
+        </dl>
+    </section>
+    <section class="card">
+        <h2>App roles <code>roles</code></h2>
+        @if (Model.Roles.Length == 0)
+        {
+            <p class="badge neutral">No app roles assigned</p>
+            <p>You are authenticated, but the Viewer area will deny access.</p>
+        }
+        else
+        {
+            <ul class="role-list">
+                @foreach (var role in Model.Roles)
+                {
+                    <li class="badge">@role</li>
+                }
+            </ul>
+        }
+        <p>Viewer access: <strong>@(User.IsInRole("Viewer") ? "Allowed" : "Denied")</strong></p>
+        <a class="button" asp-page="/Viewer">Try the Viewer area</a>
+    </section>
+</div>
+<aside class="callout">
+    <h2>See the evidence</h2>
+    <p>Explore the claims from your validated sign-in. Role values are app-specific permissions,
+        not Azure resource roles or Entra directory administrator roles.</p>
+    <a asp-page="/Claims">Open claims explorer</a>
+</aside>
